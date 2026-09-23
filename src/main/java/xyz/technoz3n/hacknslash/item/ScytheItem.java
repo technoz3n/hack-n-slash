@@ -72,7 +72,7 @@ public class ScytheItem extends SwordItem {
         BlockState stripped = centerState.getToolModifiedState(context, ToolActions.AXE_STRIP, false);
         if (stripped != null) {
             Player player = context.getPlayer();
-            level.playSound(null, center, HackNSlash.SOUL_PULL_SOUND.get(), SoundSource.PLAYERS, 0.6F, 0.8F);
+            level.playSound(player, centerPos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
             level.setBlock(centerPos, stripped, 11);
             if (player != null) {
                 context.getItemInHand().hurtAndBreak(1, player, p -> p.broadcastBreakEvent(context.getHand()));
@@ -86,7 +86,8 @@ public class ScytheItem extends SwordItem {
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         boolean result = super.hurtEnemy(stack, target, attacker);
-
+        attacker.level().playSound(null, attacker.blockPosition(),
+                HackNSlash.SCYTHE_SLASH.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
         int pullLevel = stack.getEnchantmentLevel(HackNSlash.SOUL_PULL.get());
         if (pullLevel > 0 && attacker.level() instanceof ServerLevel serverLevel) {
             SoulPullEnchantment.performPull(serverLevel, attacker, target.blockPosition(), pullLevel);
