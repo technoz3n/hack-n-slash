@@ -51,9 +51,9 @@ public class SoulPullEnchantment extends Enchantment {
                 direction = direction.normalize();
             }
 
-            double strength = PULL_STRENGTH + (0.1 * (enchantLevel - 1)); // scales a bit with level now too
-            entity.setDeltaMovement(entity.getDeltaMovement().add(
-                    direction.x * strength, 0.15, direction.z * strength));
+            double strength = PULL_STRENGTH + (0.15 * (enchantLevel - 1));
+
+            entity.setDeltaMovement(direction.x * strength, 0.05, direction.z * strength);
             entity.hasImpulse = true;
             entity.hurtMarked = true;
 
