@@ -18,7 +18,7 @@ public class ScytheSoundHandler {
         System.out.println("Held item: " + player.getMainHandItem().getItem().getClass());
         if (player.getMainHandItem().getItem() instanceof ScytheItem) {
             System.out.println("Scythe check passed, playing whoosh");
-            player.level().playSound(null, player.blockPosition(),
+            player.level().playSound(player, player.blockPosition(),
                     HackNSlash.SCYTHE_WHOOSH.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
         }
     }
