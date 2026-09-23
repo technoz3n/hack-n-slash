@@ -14,9 +14,10 @@ public class ScytheSoundHandler {
 
     @SubscribeEvent
     public static void onLeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event) {
-        System.out.println("LEFTCLICKEMPTY FIRED"); // temp debug line
         Player player = event.getEntity();
+        System.out.println("Held item: " + player.getMainHandItem().getItem().getClass());
         if (player.getMainHandItem().getItem() instanceof ScytheItem) {
+            System.out.println("Scythe check passed, playing whoosh");
             player.level().playSound(null, player.blockPosition(),
                     HackNSlash.SCYTHE_WHOOSH.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
         }
