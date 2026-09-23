@@ -1,0 +1,28 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "hacknslash:item/scythe"
+  },
+  "display": {
+		"thirdperson_righthand": {
+			"rotation": [-49.5, -90, 0],
+			"translation": [0, 7.5, 0.5],
+			"scale": [1.35, 1.35, 1.05]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [-49.5, 90, 0],
+			"translation": [0, 7.5, 0.5],
+			"scale": [1.35, 1.35, 1.05]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, -84, 14.5],
+			"translation": [1.6, 4.75, 1.15],
+			"scale": [0.75, 1.65, 0.76]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, 103, -1],
+			"translation": [1.6, 4.25, 1.15],
+			"scale": [0.75, 1.65, 0.76]
+		}
+	}
+}
