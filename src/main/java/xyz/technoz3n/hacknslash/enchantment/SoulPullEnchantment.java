@@ -42,19 +42,23 @@ public class SoulPullEnchantment extends Enchantment {
 
         AABB area = new AABB(center).inflate(radius);
         List<LivingEntity> nearby = level.getEntitiesOfClass(LivingEntity.class, area,
-            e -> e != attacker && e.isAlive());
+                e -> e != attacker && e.isAlive());
 
         for (LivingEntity entity : nearby) {
-            Vec3 direction = attacker.position().subtract(entity.position()).normalize();
+            Vec3 diff = attacker.position().subtract(entity.position());
+            Vec3 direction = new Vec3(diff.x, 0, diff.z);
+            if (direction.lengthSqr() > 1.0E-4) {
+                direction = direction.normalize();
+            }
+
+            double strength = PULL_STRENGTH + (0.1 * (enchantLevel - 1)); // scales a bit with level now too
             entity.setDeltaMovement(entity.getDeltaMovement().add(
-                direction.x * PULL_STRENGTH,
-                0.1,
-                direction.z * PULL_STRENGTH
-            ));
+                    direction.x * strength, 0.15, direction.z * strength));
+            entity.hasImpulse = true;
             entity.hurtMarked = true;
 
             level.sendParticles(ParticleTypes.SOUL, entity.getX(), entity.getY() + 0.5, entity.getZ(),
-                8, 0.2, 0.2, 0.2, 0.02);
+                    8, 0.2, 0.2, 0.2, 0.02);
         }
 
         level.playSound(null, center, HackNSlash.SOUL_PULL_SOUND.get(), SoundSource.PLAYERS, 0.6F, 0.8F);

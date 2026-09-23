@@ -14,10 +14,11 @@ public class ScytheSoundHandler {
 
     @SubscribeEvent
     public static void onLeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event) {
+        System.out.println("LEFTCLICKEMPTY FIRED"); // temp debug line
         Player player = event.getEntity();
         if (player.getMainHandItem().getItem() instanceof ScytheItem) {
             player.level().playSound(null, player.blockPosition(),
-                HackNSlash.SCYTHE_WHOOSH.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+                    HackNSlash.SCYTHE_WHOOSH.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
         }
     }
 
@@ -26,7 +27,7 @@ public class ScytheSoundHandler {
         Player player = event.getEntity();
         if (player.getMainHandItem().getItem() instanceof ScytheItem && event.isVanillaCritical()) {
             player.level().playSound(null, player.blockPosition(),
-                HackNSlash.SCYTHE_SWING_HIT.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+                    HackNSlash.SCYTHE_SWING_HIT.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
         }
     }
 }

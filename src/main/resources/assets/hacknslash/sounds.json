@@ -2,38 +2,38 @@
     "scythe.soul_pull": {
         "category": "player",
         "sounds": [
-            "hacknslash:sounds/impact"
+            "hacknslash:impact"
         ]
     },
     "scythe.impact": {
         "category": "player",
         "sounds": [
-            "hacknslash:sounds/impact"
+            "hacknslash:impact"
         ]
     },
     "scythe.slash": {
         "category": "player",
         "sounds": [
-            "hacknslash:sounds/slash"
+            "hacknslash:slash"
         ]
     },
     "scythe.swinghit": {
         "category": "player",
         "sounds": [
-            "hacknslash:sounds/swinghit",
-            "hacknslash:sounds/swinghit2"
+            "hacknslash:swinghit",
+            "hacknslash:swinghit2"
         ]
     },
     "scythe.whoosh": {
         "category": "player",
         "sounds": [
-            "hacknslash:sounds/whoosh"
+            "hacknslash:whoosh"
         ]
     },
     "scythe.windup": {
         "category": "player",
         "sounds": [
-            "hacknslash:sounds/windup"
+            "hacknslash:windup"
         ]
     }
 }
