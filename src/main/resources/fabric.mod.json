@@ -3,13 +3,13 @@
 	"id": "hack-n-slash",
 	"version": "${version}",
 	"name": "Hack 'n' Slash",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "minecraft mod focused on various weapons!",
 	"authors": [
-		"Me!"
+		"techy! (technoz3n)"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://technoz3n.nekoweb.org/",
+		"sources": "https://github.com/technoz3n/hack-n-slash"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/hack-n-slash/icon.png",
