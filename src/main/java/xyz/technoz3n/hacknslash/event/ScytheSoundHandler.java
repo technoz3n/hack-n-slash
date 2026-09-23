@@ -1,12 +1,17 @@
 package xyz.technoz3n.hacknslash.event;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import xyz.technoz3n.hacknslash.HackNSlash;
+import xyz.technoz3n.hacknslash.enchantment.SoulPullEnchantment;
 import xyz.technoz3n.hacknslash.item.ScytheItem;
 
 @Mod.EventBusSubscriber(modid = HackNSlash.MODID)
@@ -20,6 +25,21 @@ public class ScytheSoundHandler {
             System.out.println("Scythe check passed, playing whoosh");
             player.level().playSound(player, player.blockPosition(),
                     HackNSlash.SCYTHE_WHOOSH.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onLivingHurt(LivingHurtEvent event) {
+        if (!(event.getSource().getEntity() instanceof LivingEntity attacker))
+            return;
+
+        ItemStack heldStack = attacker.getMainHandItem();
+        if (!(heldStack.getItem() instanceof ScytheItem))
+            return;
+
+        int pullLevel = heldStack.getEnchantmentLevel(HackNSlash.SOUL_PULL.get());
+        if (pullLevel > 0 && attacker.level() instanceof ServerLevel serverLevel) {
+            SoulPullEnchantment.performPull(serverLevel, attacker, event.getEntity(), pullLevel);
         }
     }
 
