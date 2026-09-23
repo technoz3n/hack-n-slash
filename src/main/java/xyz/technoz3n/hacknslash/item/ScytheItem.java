@@ -88,11 +88,6 @@ public class ScytheItem extends SwordItem {
         boolean result = super.hurtEnemy(stack, target, attacker);
         attacker.level().playSound(null, attacker.blockPosition(),
                 HackNSlash.SCYTHE_SLASH.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
-        int pullLevel = stack.getEnchantmentLevel(HackNSlash.SOUL_PULL.get());
-        if (pullLevel > 0 && attacker.level() instanceof ServerLevel serverLevel) {
-            SoulPullEnchantment.performPull(serverLevel, attacker, target.blockPosition(), pullLevel);
-        }
-
         return result;
     }
 }
