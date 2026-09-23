@@ -58,6 +58,8 @@ public class HackNSlash {
             () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(MODID, "scythe.swinghit")));
     public static final RegistryObject<SoundEvent> SCYTHE_SLASH = SOUND_EVENTS.register("scythe.slash",
             () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(MODID, "scythe.slash")));
+    public static final RegistryObject<SoundEvent> SCYTHE_WINDUP = SOUND_EVENTS.register("scythe.windup",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(MODID, "scythe.windup")));
 
     public HackNSlash(FMLJavaModLoadingContext context) {
         IEventBus modEventBus = context.getModEventBus();

@@ -1,16 +1,21 @@
 package xyz.technoz3n.hacknslash.item;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -24,9 +29,44 @@ import xyz.technoz3n.hacknslash.enchantment.SoulPullEnchantment;
 import java.util.Optional;
 
 public class ScytheItem extends SwordItem {
+    private static final int REQUIRED_CHARGE_TICKS = 20;
+    private static final int MAX_USE_TICKS = 40;
+    private static final int POST_RELEASE_COOLDOWN = 30;
+    private static final float EXECUTE_HEALTH_THRESHOLD = 0.15F;
+    private static final String CHARGED_TAG = "hnsExecuteCharged";
 
     public ScytheItem(Tier tier, int attackDamageModifier, float attackSpeedModifier, Properties properties) {
         super(tier, attackDamageModifier, attackSpeedModifier, properties);
+    }
+
+    @Override
+    public UseAnim getUseAnimation(ItemStack stack) {
+        return UseAnim.BOW;
+    }
+
+    @Override
+    public int getUseDuration(ItemStack stack) {
+        return MAX_USE_TICKS;
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        player.startUsingItem(hand);
+        level.playSound(null, player.blockPosition(),
+                HackNSlash.SCYTHE_WINDUP.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+        return InteractionResultHolder.consume(player.getItemInHand(hand));
+    }
+
+    @Override
+    public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
+        if (!(entity instanceof Player player))
+            return;
+
+        int ticksCharged = getUseDuration(stack) - timeLeft;
+        if (ticksCharged >= REQUIRED_CHARGE_TICKS) {
+            stack.getOrCreateTag().putBoolean(CHARGED_TAG, true);
+        }
+        player.getCooldowns().addCooldown(this, POST_RELEASE_COOLDOWN);
     }
 
     @Override
@@ -88,6 +128,25 @@ public class ScytheItem extends SwordItem {
         boolean result = super.hurtEnemy(stack, target, attacker);
         attacker.level().playSound(null, attacker.blockPosition(),
                 HackNSlash.SCYTHE_SLASH.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+
+        CompoundTag tag = stack.getTag();
+        if (tag != null && tag.getBoolean(CHARGED_TAG)) {
+            tag.remove(CHARGED_TAG);
+
+            if (target.isAlive()
+                    && target.getHealth() / target.getMaxHealth() <= EXECUTE_HEALTH_THRESHOLD
+                    && attacker.level() instanceof ServerLevel serverLevel) {
+
+                target.hurt(attacker.damageSources().mobAttack(
+                        attacker instanceof Player p ? p : null), target.getHealth() + 1.0F);
+
+                attacker.heal(2.0F);
+                serverLevel.sendParticles(ParticleTypes.SOUL, target.getX(), target.getY() + 0.5, target.getZ(),
+                        16, 0.3, 0.3, 0.3, 0.05);
+                serverLevel.playSound(null, target.blockPosition(),
+                        SoundEvents.WITHER_DEATH, SoundSource.PLAYERS, 0.5F, 1.6F);
+            }
+        }
         return result;
     }
 }
