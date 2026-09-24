@@ -39,3 +39,8 @@ a scythe-exclusive enchantment designed to pull fleeing targets back into melee 
 ## requirements & setup
 * **minecraft:** `1.20.1`
 * **mod loader:** `Forge`
+
+---
+
+## credits
+* rocket launcher model and texture: `Iron Minecart42` on [sketchfab](https://sketchfab.com/3d-models/ultrakill-rocket-launcher-remake-fixed-fan-art-0c7ac9650b55416da816656ca8e6a5ec)
