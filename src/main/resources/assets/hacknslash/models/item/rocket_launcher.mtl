@@ -1,0 +1,5 @@
+newmtl m_f0b41120-3050-e1b5-3fe9-ae50dbad1ec2
+map_Kd hacknslash:item/rocket_launcher_color
+
+newmtl none
+map_Kd hacknslash:item/rocket_launcher_color

@@ -11,6 +11,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraftforge.network.NetworkHooks;
 import xyz.technoz3n.hacknslash.HackNSlash;
 
 public class RocketProjectile extends ThrowableProjectile {
@@ -37,21 +40,21 @@ public class RocketProjectile extends ThrowableProjectile {
     private void explode(ServerLevel level) {
         level.getEntitiesOfClass(LivingEntity.class,
                 getBoundingBox().inflate(LAUNCH_RADIUS)).forEach(entity -> {
-            Vec3 diff = entity.position().subtract(this.position());
-            double distance = diff.length();
-            if (distance > LAUNCH_RADIUS || distance < 0.01) return;
+                    Vec3 diff = entity.position().subtract(this.position());
+                    double distance = diff.length();
+                    if (distance > LAUNCH_RADIUS || distance < 0.01)
+                        return;
 
-            double falloff = 1.0 - (distance / LAUNCH_RADIUS);
-            Vec3 direction = diff.normalize();
+                    double falloff = 1.0 - (distance / LAUNCH_RADIUS);
+                    Vec3 direction = diff.normalize();
 
-            entity.setDeltaMovement(entity.getDeltaMovement().add(
-                direction.x * LAUNCH_STRENGTH * falloff,
-                Math.max(direction.y, 0.3) * LAUNCH_STRENGTH * falloff,
-                direction.z * LAUNCH_STRENGTH * falloff
-            ));
-            entity.hasImpulse = true;
-            entity.hurtMarked = true;
-        });
+                    entity.setDeltaMovement(entity.getDeltaMovement().add(
+                            direction.x * LAUNCH_STRENGTH * falloff,
+                            Math.max(direction.y, 0.3) * LAUNCH_STRENGTH * falloff,
+                            direction.z * LAUNCH_STRENGTH * falloff));
+                    entity.hasImpulse = true;
+                    entity.hurtMarked = true;
+                });
 
         level.sendParticles(ParticleTypes.EXPLOSION, position().x, position().y, position().z,
                 1, 0.0, 0.0, 0.0, 0.0);
@@ -65,8 +68,14 @@ public class RocketProjectile extends ThrowableProjectile {
     protected float getGravity() {
         return 0.03F;
     }
+
     @Override
-    protected void defineSynchedData() { 
-    
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
+    }
+
+    @Override
+    protected void defineSynchedData() {
+
     }
 }

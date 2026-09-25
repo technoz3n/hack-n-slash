@@ -1,0 +1,45 @@
+{
+  "loader": "forge:obj",
+  "model": "hacknslash:models/item/rocket_launcher.obj",
+  "detectCullableFaces": true,
+  "flip-v": true,
+  "diffuseLighting": false,
+  "ambientocclusion": false,
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [0, 90, 0],
+      "translation": [0, 2, -1],
+      "scale": [1.5, 1.5, 1.5]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [0, 90, 0],
+      "translation": [0, 2, -1],
+      "scale": [1.5, 1.5, 1.5]
+    },
+    "firstperson_righthand": {
+      "rotation": [0, 90, 0],
+      "translation": [0, 0, 0],
+      "scale": [1.5, 1.5, 1.5]
+    },
+    "firstperson_lefthand": {
+      "rotation": [0, 90, 0],
+      "translation": [0, 0, 0],
+      "scale": [1.5, 1.5, 1.5]
+    },
+    "gui": {
+      "rotation": [30, 135, 0],
+      "translation": [0, 0, 0],
+      "scale": [1.5, 1.5, 1.5]
+    },
+    "ground": {
+      "rotation": [0, 0, 0],
+      "translation": [0, 2, 0],
+      "scale": [1.5, 1.5, 1.5]
+    },
+    "fixed": {
+      "rotation": [0, 90, 0],
+      "translation": [0, 0, 0],
+      "scale": [1.5, 1.5, 1.5]
+    }
+  }
+}

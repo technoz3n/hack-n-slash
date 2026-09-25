@@ -5,14 +5,17 @@ import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -27,10 +30,9 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import xyz.technoz3n.hacknslash.enchantment.SoulPullEnchantment;
-import xyz.technoz3n.hacknslash.item.ScytheItem;
 import xyz.technoz3n.hacknslash.entity.RocketProjectile;
 import xyz.technoz3n.hacknslash.item.RocketLauncherItem;
-import net.minecraft.sounds.SoundEvent;
+import xyz.technoz3n.hacknslash.item.ScytheItem;
 
 @Mod(HackNSlash.MODID)
 public class HackNSlash {
@@ -45,7 +47,7 @@ public class HackNSlash {
                         () -> new ScytheItem(Tiers.NETHERITE, 8, -2.8F, new Item.Properties()));
         // rocket launcher
         public static final RegistryObject<Item> ROCKET_LAUNCHER = ITEMS.register("rocket_launcher",
-    () -> new RocketLauncherItem(new Item.Properties().stacksTo(1).durability(64)));
+                        () -> new RocketLauncherItem(new Item.Properties().stacksTo(1).durability(64)));
         // same thing, but for enchantments
         public static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister
                         .create(ForgeRegistries.ENCHANTMENTS, MODID);
@@ -117,6 +119,11 @@ public class HackNSlash {
                 public static void onClientSetup(FMLClientSetupEvent event) {
                         // some client setup code
                         LOGGER.info("HELLO I AM A CLIENT CAT SETUP");
+                }
+
+                @SubscribeEvent
+                public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+                        event.registerEntityRenderer(ROCKET_PROJECTILE.get(), NoopRenderer::new);
                 }
 
                 @SubscribeEvent
