@@ -23,7 +23,7 @@ import xyz.technoz3n.hacknslash.event.RapierDashHandler;
 public class RapierItem extends SwordItem {
 
     private static final int MAX_CHARGES = 3;
-    private static final int RECHARGE_TICKS = 10; // 0.5s per charge
+    private static final int RECHARGE_TICKS = 30; // 1.5s per charge
     private static final int DEPLETED_LOCKOUT_TICKS = 20; // 1s extra lockout after hitting 0
     private static final int THROW_THRESHOLD_TICKS = 10; // min hold before release counts as a real dash
     private static final int USE_DURATION = 72000; // hold-until-released
