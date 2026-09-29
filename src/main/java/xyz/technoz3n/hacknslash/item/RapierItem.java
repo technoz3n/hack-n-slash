@@ -2,6 +2,8 @@ package xyz.technoz3n.hacknslash.item;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -53,20 +55,32 @@ public class RapierItem extends SwordItem {
 
         CompoundTag tag = stack.getOrCreateTag();
         int charges = tag.contains(TAG_CHARGES) ? tag.getInt(TAG_CHARGES) : MAX_CHARGES;
-        if (charges >= MAX_CHARGES)
-            return;
 
         long gameTime = level.getGameTime();
         long lockoutUntil = tag.getLong(TAG_LOCKOUT_UNTIL);
-        if (gameTime < lockoutUntil)
-            return;
 
-        long nextRegen = tag.contains(TAG_NEXT_REGEN) ? tag.getLong(TAG_NEXT_REGEN) : gameTime + RECHARGE_TICKS;
-        if (gameTime >= nextRegen) {
-            tag.putInt(TAG_CHARGES, Math.min(MAX_CHARGES, charges + 1));
-            tag.putLong(TAG_NEXT_REGEN, gameTime + RECHARGE_TICKS);
-        } else if (!tag.contains(TAG_NEXT_REGEN)) {
-            tag.putLong(TAG_NEXT_REGEN, nextRegen);
+        if (charges < MAX_CHARGES && gameTime >= lockoutUntil) {
+            long nextRegen = tag.contains(TAG_NEXT_REGEN) ? tag.getLong(TAG_NEXT_REGEN) : gameTime + RECHARGE_TICKS;
+            if (gameTime >= nextRegen) {
+                tag.putInt(TAG_CHARGES, Math.min(MAX_CHARGES, charges + 1));
+                tag.putLong(TAG_NEXT_REGEN, gameTime + RECHARGE_TICKS);
+            } else if (!tag.contains(TAG_NEXT_REGEN)) {
+                tag.putLong(TAG_NEXT_REGEN, nextRegen);
+            }
+        }
+
+        if (selected && entity instanceof Player player) {
+            int displayCharges = tag.contains(TAG_CHARGES) ? tag.getInt(TAG_CHARGES) : MAX_CHARGES;
+            String pips = "●".repeat(displayCharges) + "○".repeat(MAX_CHARGES - displayCharges);
+
+            MutableComponent message;
+            if (gameTime < lockoutUntil) {
+                float secondsLeft = (lockoutUntil - gameTime) / 20.0F;
+                message = Component.literal(pips + String.format(" (recharging in %.1fs)", secondsLeft));
+            } else {
+                message = Component.literal(pips);
+            }
+            player.displayClientMessage(message, true);
         }
     }
 

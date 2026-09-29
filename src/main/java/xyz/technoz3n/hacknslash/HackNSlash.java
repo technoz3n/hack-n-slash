@@ -53,7 +53,7 @@ public class HackNSlash {
         public static final RegistryObject<Item> ROCKET_LAUNCHER = ITEMS.register("rocket_launcher",
                         () -> new RocketLauncherItem(new Item.Properties().stacksTo(1).durability(64)));
         public static final RegistryObject<Item> RAPIER = ITEMS.register("rapier",
-                        () -> new RapierItem(Tiers.NETHERITE, 10, -1.6F, new Item.Properties()));
+                        () -> new RapierItem(Tiers.NETHERITE, 5, -2.1F, new Item.Properties()));
         public static final RegistryObject<Item> AK = ITEMS.register("ak47",
                         () -> new AKItem(new Item.Properties().stacksTo(1).durability(2000)));
         // same thing, but for enchantments
@@ -147,6 +147,9 @@ public class HackNSlash {
                 public static void onBuildCreativeModeTabContents(BuildCreativeModeTabContentsEvent event) {
                         if (event.getTabKey() == CreativeModeTabs.COMBAT) {
                                 event.accept(SCYTHE);
+                                event.accept(RAPIER);
+                                event.accept(ROCKET_LAUNCHER);
+                                event.accept(AK);
                         }
                 }
         }

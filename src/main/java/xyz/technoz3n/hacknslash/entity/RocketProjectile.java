@@ -18,8 +18,8 @@ import xyz.technoz3n.hacknslash.HackNSlash;
 
 public class RocketProjectile extends ThrowableProjectile {
 
-    private static final double LAUNCH_RADIUS = 5.0;
-    private static final double LAUNCH_STRENGTH = 5.8;
+    private static final double LAUNCH_RADIUS = 3.0;
+    private static final double LAUNCH_STRENGTH = 4.5;
 
     public RocketProjectile(EntityType<? extends RocketProjectile> type, Level level) {
         super(type, level);
