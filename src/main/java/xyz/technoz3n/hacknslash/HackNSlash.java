@@ -29,10 +29,13 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import xyz.technoz3n.hacknslash.client.BulletProjectileRenderer;
 import xyz.technoz3n.hacknslash.enchantment.SoulPullEnchantment;
 import xyz.technoz3n.hacknslash.entity.RocketProjectile;
 import xyz.technoz3n.hacknslash.item.RocketLauncherItem;
 import xyz.technoz3n.hacknslash.item.ScytheItem;
+import xyz.technoz3n.hacknslash.entity.BulletProjectile;
+import xyz.technoz3n.hacknslash.item.AKItem;
 import xyz.technoz3n.hacknslash.item.RapierItem;
 
 @Mod(HackNSlash.MODID)
@@ -49,7 +52,10 @@ public class HackNSlash {
         // rocket launcher
         public static final RegistryObject<Item> ROCKET_LAUNCHER = ITEMS.register("rocket_launcher",
                         () -> new RocketLauncherItem(new Item.Properties().stacksTo(1).durability(64)));
-        public static final RegistryObject<Item> RAPIER = ITEMS.register("rapier", () -> new RapierItem(Tiers.NETHERITE, 10, -1.6F, new Item.Properties()));
+        public static final RegistryObject<Item> RAPIER = ITEMS.register("rapier",
+                        () -> new RapierItem(Tiers.NETHERITE, 10, -1.6F, new Item.Properties()));
+        public static final RegistryObject<Item> AK = ITEMS.register("ak47",
+                        () -> new AKItem(new Item.Properties().stacksTo(1).durability(2000)));
         // same thing, but for enchantments
         public static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister
                         .create(ForgeRegistries.ENCHANTMENTS, MODID);
@@ -80,6 +86,13 @@ public class HackNSlash {
                                         .clientTrackingRange(64)
                                         .updateInterval(10)
                                         .build("rocket_projectile"));
+        public static final RegistryObject<EntityType<BulletProjectile>> BULLET_PROJECTILE = ENTITY_TYPES.register(
+                        "bullet_projectile",
+                        () -> EntityType.Builder.<BulletProjectile>of(BulletProjectile::new, MobCategory.MISC)
+                                        .sized(0.1F, 0.1F)
+                                        .clientTrackingRange(64)
+                                        .updateInterval(1)
+                                        .build("bullet_projectile"));
 
         public HackNSlash(FMLJavaModLoadingContext context) {
                 IEventBus modEventBus = context.getModEventBus();
@@ -125,8 +138,10 @@ public class HackNSlash {
 
                 @SubscribeEvent
                 public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-                        event.registerEntityRenderer(ROCKET_PROJECTILE.get(), NoopRenderer::new);
+                        event.registerEntityRenderer(HackNSlash.ROCKET_PROJECTILE.get(), NoopRenderer::new);
+                        event.registerEntityRenderer(HackNSlash.BULLET_PROJECTILE.get(), BulletProjectileRenderer::new);
                 }
+
 
                 @SubscribeEvent
                 public static void onBuildCreativeModeTabContents(BuildCreativeModeTabContentsEvent event) {
