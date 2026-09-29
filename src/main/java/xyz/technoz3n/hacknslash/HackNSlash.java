@@ -33,6 +33,7 @@ import xyz.technoz3n.hacknslash.enchantment.SoulPullEnchantment;
 import xyz.technoz3n.hacknslash.entity.RocketProjectile;
 import xyz.technoz3n.hacknslash.item.RocketLauncherItem;
 import xyz.technoz3n.hacknslash.item.ScytheItem;
+import xyz.technoz3n.hacknslash.item.RapierItem;
 
 @Mod(HackNSlash.MODID)
 public class HackNSlash {
@@ -48,6 +49,7 @@ public class HackNSlash {
         // rocket launcher
         public static final RegistryObject<Item> ROCKET_LAUNCHER = ITEMS.register("rocket_launcher",
                         () -> new RocketLauncherItem(new Item.Properties().stacksTo(1).durability(64)));
+        public static final RegistryObject<Item> RAPIER = ITEMS.register("rapier", () -> new RapierItem(Tiers.NETHERITE, 10, -1.6F, new Item.Properties()));
         // same thing, but for enchantments
         public static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister
                         .create(ForgeRegistries.ENCHANTMENTS, MODID);
